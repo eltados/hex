@@ -31,7 +31,7 @@ class Board
     if player == self.current_player
       return false
     end
-    if self.spots[x.to_i][y.to_i] == "" then
+    if self.spots[x.to_i][y.to_i] == ""
       return false
 
     end
@@ -39,9 +39,6 @@ class Board
     self.spots[x.to_i][y.to_i] = player == @player1 ? "blue" : "red"
     switch_current_player
     return true
-  end
-
-  false
 end
 
 def add_player(player_id)
