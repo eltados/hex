@@ -1,0 +1,128 @@
+<style>
+
+
+    .hexagon {
+        width: 100px;
+        height: 55px;
+        background: #CCC;
+        position: relative;
+        display: inline-block;
+        font-size: 8px;
+        text-align: center;
+
+    }
+
+    .hexagon:before {
+        content: "";
+        position: absolute;
+        top: -25px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-bottom: 25px solid #CCC;
+    }
+
+    .hexagon:after {
+        content: "";
+        position: absolute;
+        bottom: -25px;
+        left: 0;
+        width: 0;
+        height: 0;
+        border-left: 50px solid transparent;
+        border-right: 50px solid transparent;
+        border-top: 25px solid #CCC;
+    }
+
+    .row {
+        /*border: 1px solid black;*/
+        margin-top: 26px;
+    }
+
+    .red {
+        background: red;
+    }
+
+    .red.hexagon:before {
+
+        border-bottom: 25px solid red;
+    }
+
+    .red.hexagon:after {
+        border-top: 25px solid red;
+    }
+
+    .blue {
+        background: blue;
+    }
+
+    .blue.hexagon:before {
+
+        border-bottom: 25px solid blue;
+    }
+
+    .blue.hexagon:after {
+        border-top: 25px solid blue;
+    }
+
+    .hexagon:hover {
+        background: chartreuse;
+    }
+
+    .hexagon:hover:before {
+        border-bottom: 25px solid chartreuse;
+    }
+
+    .hexagon:hover:after {
+        border-top: 25px solid chartreuse;
+    }
+
+    .log {
+        border: 1px solid black;
+        width: 400px;
+        height: 200px;
+        position: fixed;
+        top: 0px;
+        right: 0px;
+        overflow: auto;
+        overflow-x: hidden;
+
+
+    }
+     .notice{
+         position:fixed;
+         top: 50%;
+         left: 50%;
+         width:30em;
+         height:18em;
+         margin-top: -9em; /*set to a negative number 1/2 of your height*/
+         margin-left: -15em; /*set to a negative number 1/2 of your width*/
+         border: 1px solid #ccc;
+         background-color: #f3f3f3;
+         z-index: 500;
+         padding: 15px;
+         text-align: center;
+            vertical-align: middle;
+     }
+
+</style>
+
+
+<% if  flash[:notice] %>
+    <div class="notice"><%= flash[:notice] %></div>
+<% end %>
+<div class="log">
+  <ul>
+    <% settings.store[:log].reverse.each do |log| %>
+        <li> <%= log %> </li>
+    <% end %>
+  </ul>
+</div>
+<%= session['guid'] == @board.current_player ? "Your turn" : "Please wait for your opponent to play ... " %><br/>
+<%= @board.inspect %>
+
+<%= @board.draw %>
+
+
