@@ -1,9 +1,11 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
 <style>
 
 
     .hexagon {
-        width: 100px;
-        height: 55px;
+        width: 50px;
+        height: 27px;
         background: #CCC;
         position: relative;
         display: inline-block;
@@ -15,30 +17,30 @@
     .hexagon:before {
         content: "";
         position: absolute;
-        top: -25px;
+        top: -12px;
         left: 0;
         width: 0;
         height: 0;
-        border-left: 50px solid transparent;
-        border-right: 50px solid transparent;
-        border-bottom: 25px solid #CCC;
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        border-bottom: 12px solid #CCC;
     }
 
     .hexagon:after {
         content: "";
         position: absolute;
-        bottom: -25px;
+        bottom: -12px;
         left: 0;
         width: 0;
         height: 0;
-        border-left: 50px solid transparent;
-        border-right: 50px solid transparent;
-        border-top: 25px solid #CCC;
+        border-left: 25px solid transparent;
+        border-right: 25px solid transparent;
+        border-top: 12px solid #CCC;
     }
 
     .row {
         /*border: 1px solid black;*/
-        margin-top: 26px;
+        margin-top: 13px;
     }
 
     .red {
@@ -47,11 +49,11 @@
 
     .red.hexagon:before {
 
-        border-bottom: 25px solid red;
+        border-bottom: 12px solid red;
     }
 
     .red.hexagon:after {
-        border-top: 25px solid red;
+        border-top: 12px solid red;
     }
 
     .blue {
@@ -60,11 +62,11 @@
 
     .blue.hexagon:before {
 
-        border-bottom: 25px solid blue;
+        border-bottom: 12px solid blue;
     }
 
     .blue.hexagon:after {
-        border-top: 25px solid blue;
+        border-top: 12px solid blue;
     }
 
     .hexagon:hover {
@@ -72,11 +74,11 @@
     }
 
     .hexagon:hover:before {
-        border-bottom: 25px solid chartreuse;
+        border-bottom: 12px solid chartreuse;
     }
 
     .hexagon:hover:after {
-        border-top: 25px solid chartreuse;
+        border-top: 12px solid chartreuse;
     }
 
     .log {
@@ -89,40 +91,131 @@
         overflow: auto;
         overflow-x: hidden;
 
-
     }
-     .notice{
-         position:fixed;
-         top: 50%;
-         left: 50%;
-         width:30em;
-         height:18em;
-         margin-top: -9em; /*set to a negative number 1/2 of your height*/
-         margin-left: -15em; /*set to a negative number 1/2 of your width*/
-         border: 1px solid #ccc;
-         background-color: #f3f3f3;
-         z-index: 500;
-         padding: 15px;
-         text-align: center;
-            vertical-align: middle;
-     }
+
+    .notice {
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        width: 16em;
+        /*height: 18em;*/
+        margin-left: -8em;
+        border: 1px solid #ccc;
+        background-color: #f3f3f3;
+        z-index: 500;
+        padding: 15px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: x-large;
+        border-radius: 15px;
+    }
+
+    .status {
+        position: fixed;
+        top: 15px;
+        right: 15px;;
+        /*border: 1px solid black;*/
+        z-index: 500;
+        padding: 15px;
+        text-align: center;
+        vertical-align: middle;
+        font-size: x-large;
+        border-radius: 15px;
+        color: white;
+    }
+
+    .shadow {
+        /*-webkit-box-shadow: 0px 0px 20px rgba(50, 50, 50, 0.86);*/
+        /*-moz-box-shadow: 0px 0px 20px rgba(50, 50, 50, 0.86);*/
+        box-shadow: 0px 0px 50px rgba(0, 0, 0, 0.86);
+    }
 
 </style>
+<script>
 
+    function close(id) {
+        var el = document.getElementById(id);
+        el.style.display = 'none';
+    }
 
+</script>
+
+<body style="padding: 15px; margin: 0px; border: 10px <%= me.color %> <%= (me == @board.current_player) ? "solid" : "dashed" %>">
+
+<%
+   def me
+     @board.player(session['guid'])
+   end
+
+%>
 <% if  flash[:notice] %>
-    <div class="notice"><%= flash[:notice] %></div>
+    <div class="notice shadow" id="notice"><%= flash[:notice] %>
+      <a href="javascript:close('notice');" class="close">X</a></div>
 <% end %>
-<div class="log">
+<!-- <div class="log">
   <ul>
     <% settings.store[:log].reverse.each do |log| %>
         <li> <%= log %> </li>
     <% end %>
   </ul>
+</div> -->
+
+<!--<div id="me">-->
+<!--<ul>-->
+<!--<li>guid : <%= session['guid'] %></li>-->
+<!--<li>me :  <%= me.to_s %></li>-->
+<!--</ul>-->
+
+
+<!--</div>-->
+<%#=
+    me.color %>
+<% if false %>
+    <ul>
+      <li><%= "Player 1 : #{@board.player1.g} (#{@board.player1.color})" %><%= if (me == @board.player1) then
+                                                                                 " * You"
+                                                                               end %></li>
+      <li><%= "Player 2 : #{@board.player2.g} (#{@board.player2.color})" %><%= if (me == @board.player2) then
+                                                                                 " * You"
+                                                                               end %></li>
+    </ul>
+<% end %>
+
+       Turn <%=@board.turn %><br/>
+<div class="status " style="background-color: <%= @board.current_player.color %>">
+  <% if (me == @board.current_player) %>
+      Your turn
+  <% elsif me.color != "black" %>
+      Waiting for player  <br/> <%= @board.current_player.color %> to play...
+      <script>
+
+          $(getUpdate);
+          function getUpdate() {
+              $.getScript("/refresh/wait-turn")
+                      .done(function (script, textStatus) {
+                          console.log(textStatus);
+                      })  ;
+              setTimeout(getUpdate, 500);
+          }
+      </script>
+  <% else %>
+      It is the <%= @board.current_player.color %> player's turn.
+      <script>
+
+          $(getUpdate);
+          function getUpdate() {
+              $.getScript("/refresh/watch?turn=<%= @board.turn %>")
+                      .done(function (script, textStatus) {
+                          console.log(textStatus);
+                      })
+              setTimeout(getUpdate, 500);
+          }
+      </script>
+
+  <% end %>
 </div>
-<%= session['guid'] == @board.current_player ? "Your turn" : "Please wait for your opponent to play ... " %><br/>
-<%= @board.inspect %>
 
 <%= @board.draw %>
 
 
+</body>

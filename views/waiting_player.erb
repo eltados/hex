@@ -1,0 +1,14 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+Waiting for player 2 to connect ...
+    <script>
+
+        $(getUpdate);
+        function getUpdate() {
+            $.getScript("/refresh/wait-player")
+                    .done(function (script, textStatus) {
+                        console.log(textStatus);
+                    })
+            setTimeout(getUpdate, 500);
+        }
+    </script>
+
