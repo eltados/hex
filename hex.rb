@@ -114,8 +114,10 @@ class Board
     out
   end
 
-  def winner
-    nil
+  def winner?
+   false
+
+
   end
 
   def turn
@@ -145,7 +147,7 @@ def db
 end
 
 get '/' do
-  db[:board] = Board.new(12) unless db[:board]
+  db[:board] = Board.new(14) unless db[:board]
   db[:log] = [] unless db[:log]
   db[:players] = [] unless db[:players]
   db[:board].add_player(guid())
@@ -170,7 +172,7 @@ get '/play/:x/:y' do
     flash[:notice] = error
   end
 
-  if board.winner != nil
+  if board.winner?
 
     db[:log] << "#{Time.now.strftime("%H:%M:%S")} : #{session['guid'][0..5]}   wins!"
   end
