@@ -1,11 +1,11 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-
+    <% s = 600/@board.size %>
 <style>
 
 
     .hexagon {
-        width: 50px;
-        height: 27px;
+        width: <%= s %>px;
+        height:<%= s/2 %>px;
         background: #CCC;
         position: relative;
         display: inline-block;
@@ -17,30 +17,30 @@
     .hexagon:before {
         content: "";
         position: absolute;
-        top: -12px;
+        top: -<%= s/4 %>px;
         left: 0;
         width: 0;
         height: 0;
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        border-bottom: 12px solid #CCC;
+        border-left: <%= s/2 %>px solid transparent;
+        border-right: <%= s/2 %>px solid transparent;
+        border-bottom: <%= s/4 %>px solid #CCC;
     }
 
     .hexagon:after {
         content: "";
         position: absolute;
-        bottom: -12px;
+        bottom: -<%= s/4 %>px;
         left: 0;
         width: 0;
         height: 0;
-        border-left: 25px solid transparent;
-        border-right: 25px solid transparent;
-        border-top: 12px solid #CCC;
+        border-left: <%= s/2 %>px solid transparent;
+        border-right: <%= s/2 %>px solid transparent;
+        border-top: <%= s/4 %>px solid #CCC;
     }
 
     .row {
         /*border: 1px solid black;*/
-        margin-top: 13px;
+        margin-top: <%= s/4 %>px;
     }
 
     .red {
@@ -49,11 +49,11 @@
 
     .red.hexagon:before {
 
-        border-bottom: 12px solid red;
+        border-bottom: <%= s/4 %>px solid red;
     }
 
     .red.hexagon:after {
-        border-top: 12px solid red;
+        border-top: <%= s/4 %>px solid red;
     }
 
     .blue {
@@ -62,11 +62,11 @@
 
     .blue.hexagon:before {
 
-        border-bottom: 12px solid blue;
+        border-bottom: <%= s/4 %>px solid blue;
     }
 
     .blue.hexagon:after {
-        border-top: 12px solid blue;
+        border-top: <%= s/4 %>px solid blue;
     }
 
     .hexagon:hover {
@@ -74,11 +74,11 @@
     }
 
     .hexagon:hover:before {
-        border-bottom: 12px solid chartreuse;
+        border-bottom: <%= s/4 %>px solid chartreuse;
     }
 
     .hexagon:hover:after {
-        border-top: 12px solid chartreuse;
+        border-top: <%= s/4 %>px solid chartreuse;
     }
 
     .log {
@@ -215,7 +215,7 @@
   <% end %>
 </div>
 
-<%= @board.draw %>
+<%= @board.draw(s) %>
 
 
 </body>

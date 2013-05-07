@@ -13,6 +13,7 @@ end
 class Player
   attr_accessor :guid, :color, :player_num
 
+
   def initialize(options)
     @guid = options[:guid]
     @color = options[:color]
@@ -35,6 +36,7 @@ end
 
 class Board
   attr_accessor :spots, :player1, :player2, :current_player
+  attr_reader :size
 
 
   def initialize(s)
@@ -99,10 +101,10 @@ class Board
     end
   end
 
-  def draw
+  def draw(s=50)
     out = ""
     @size.times do |y|
-      out << "<div class='row' style='margin-left:#{y * 25}px;'>\n"
+      out << "<div class='row' style='margin-left:#{y * s /2}px;'>\n"
       @size.times do |x|
         out << "<a  href='play/#{x}/#{y}'>"
         out << "<div class='hexagon "
@@ -147,7 +149,8 @@ def db
 end
 
 get '/' do
-  db[:board] = Board.new(14) unless db[:board]
+  size = params[:size].to_i ||= 12
+  db[:board] = Board.new(size) unless db[:board]
   db[:log] = [] unless db[:log]
   db[:players] = [] unless db[:players]
   db[:board].add_player(guid())
@@ -181,11 +184,11 @@ get '/play/:x/:y' do
 end
 
 
-get '/reset' do
+get '/reset/:size' do
   db.each_key do |key|
     db[key] = nil
   end
-  redirect '/'
+  redirect '/?size='+params[:size]
 end
 
 
